@@ -34,14 +34,11 @@ public partial class MainWindowViewModel : ObservableObject
         var hashedPass = File.ReadAllText(_filePath);
         var isPassOk = _hasher.VerifyPassword(Password!, hashedPass);
 
-        if (isPassOk)
+        Message = isPassOk switch
         {
-            Message = "Lozinka je ispravna!";
-        }
-        else
-        {
-            Message = "Lozinka je neispravna!";
-        }
+            true => "Lozinka je ispravna!",
+            false => "Lozinka je neispravna!"
+        };
     }
     private bool CanVerifyPassword()
     {
