@@ -28,13 +28,13 @@ public class PasswordHasher
     {
         var passParts = storedHash.Split(".");
 
-        var hashedPass = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+        var hashedPass = KeyDerivation.Pbkdf2(
             password: password,
             salt: Convert.FromBase64String(passParts[0]),
             prf: KeyDerivationPrf.HMACSHA256,
             iterationCount: 10000,
-            numBytesRequested: 32));
+            numBytesRequested: 32);
 
-        return hashedPass == passParts[1];
+        return CryptographicOperations.FixedTimeEquals(hashedPass, Convert.FromBase64String(passParts[1]));
     }
 }
